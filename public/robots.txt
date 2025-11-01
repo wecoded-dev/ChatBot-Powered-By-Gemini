@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://yourdomain.com/sitemap.xml
+
+# Allow all crawlers for SEO
+Disallow:
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 10
