@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="description" content="Gemini Ultra Chatbot - Ultra Premium AI-Powered Chat Experience" />
+    <meta name="keywords" content="AI, Chatbot, Gemini, Google AI, Artificial Intelligence, Chat, Assistant" />
+    <meta name="author" content="Gemini Ultra Chatbot" />
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Gemini Ultra Chatbot" />
+    <meta property="og:description" content="Ultra Premium AI-Powered Chat Experience with Google Gemini" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/preview-image.png" />
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Gemini Ultra Chatbot" />
+    <meta name="twitter:description" content="Ultra Premium AI-Powered Chat Experience with Google Gemini" />
+    <meta name="twitter:image" content="/preview-image.png" />
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Preload critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" as="style">
+    
+    <title>Gemini Ultra Chatbot - Ultra Premium AI Experience</title>
+    
+    <style>
+      /* Critical CSS for initial loading */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      
+      /* Loading screen styles */
+      #loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease-out;
+      }
+      
+      .loading-spinner {
+        width: 60px;
+        height: 60px;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top: 4px solid #ffffff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 20px;
+      }
+      
+      .loading-text {
+        color: white;
+        font-size: 18px;
+        font-weight: 600;
+        text-align: center;
+      }
+      
+      .loading-subtext {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 14px;
+        margin-top: 10px;
+        text-align: center;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      /* Hide the app until it's loaded */
+      #root {
+        opacity: 0;
+        transition: opacity 0.3s ease-in;
+      }
+      
+      #root.loaded {
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">Gemini Ultra Chatbot</div>
+      <div class="loading-subtext">Loading premium AI experience...</div>
+    </div>
+
+    <!-- React App Root -->
+    <div id="root"></div>
+    
+    <script type="module">
+      // Enhanced loading management
+      const loadingScreen = document.getElementById('loading-screen');
+      const root = document.getElementById('root');
+      
+      // Simulate minimum loading time for better UX
+      const minimumLoadTime = 1500;
+      const startTime = Date.now();
+      
+      function hideLoadingScreen() {
+        const elapsed = Date.now() - startTime;
+        const remaining = Math.max(0, minimumLoadTime - elapsed);
+        
+        setTimeout(() => {
+          loadingScreen.style.opacity = '0';
+          root.classList.add('loaded');
+          
+          setTimeout(() => {
+            loadingScreen.remove();
+          }, 500);
+        }, remaining);
+      }
+      
+      // Hide loading when app is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', hideLoadingScreen);
+      } else {
+        hideLoadingScreen();
+      }
+      
+      // Fallback: hide loading after 5 seconds
+      setTimeout(hideLoadingScreen, 5000);
+      
+      // Service Worker Registration for PWA
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+              console.log('SW registration failed: ', registrationError);
+            });
+        });
+      }
+      
+      // Theme persistence
+      const savedTheme = localStorage.getItem('gemini_chat_theme') || 'dark';
+      document.documentElement.className = savedTheme;
+    </script>
+    
+    <!-- Performance Monitoring -->
+    <script>
+      // Performance metrics
+      window.addEventListener('load', () => {
+        // Log performance metrics
+        if ('performance' in window) {
+          const perfData = performance.timing;
+          const loadTime = perfData.loadEventEnd - perfData.navigationStart;
+          console.log(`Page loaded in ${loadTime}ms`);
+        }
+      });
+      
+      // Error tracking
+      window.addEventListener('error', (event) => {
+        console.error('Global error:', event.error);
+      });
+    </script>
+  </body>
+</html>
